@@ -19,10 +19,19 @@ def _verify(url):
     # <scheme>://<netloc>/<path>?<query>#<fragment>
     rlt = urlsplit(url)
     query_dict = parse_qs(rlt.query)
+    timestamp = query_dict.get('timestamp', [''])[0]
     sign = query_dict.get('sign', [''])[0]
     app_id = query_dict.get('app_id', [''])[0]
-    if not (sign and app_id):
+
+    if not (timestamp and sign and app_id):
         return False
+    try:
+        timestamp = int(timestamp)
+    except ValueError:
+        return False
+    if timestamp + 60 < int(time.time()):
+        return False
+
     secret = APP_SECRET_DICT.get(app_id, '')
     return _hmac_sign(rlt.path + '?' + rlt.query[:rlt.query.index('&sign')], secret) == sign
 
@@ -33,7 +42,6 @@ def main():
     secret = 'c2460793785b43cda909677e0a69baa4'
     item_id = 10
     timestamp = int(time.time())  # 1436802509
-
     uri_with_params = '/goods/get_qty?item_id=%s&timestamp=%s&app_id=%s' % (item_id, timestamp, app_id)
     sign = _hmac_sign(uri_with_params, secret)
 
@@ -43,6 +51,8 @@ def main():
     print(url)
     print(_verify(url))
     print(_verify('http://127.0.0.1'))
+    time.sleep(61)
+    print(_verify(url))
 
 
 if __name__ == '__main__':
