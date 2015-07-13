@@ -21,6 +21,8 @@ def _verify(url):
     query_dict = parse_qs(rlt.query)
     sign = query_dict.get('sign', [''])[0]
     app_id = query_dict.get('app_id', [''])[0]
+    if not (sign and app_id):
+        return False
     secret = APP_SECRET_DICT.get(app_id, '')
     return _hmac_sign(rlt.path + '?' + rlt.query[:rlt.query.index('&sign')], secret) == sign
 
@@ -40,6 +42,7 @@ def main():
     url = 'http://127.0.0.1' + uri_with_sign
     print(url)
     print(_verify(url))
+    print(_verify('http://127.0.0.1'))
 
 
 if __name__ == '__main__':
