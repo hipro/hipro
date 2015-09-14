@@ -12,7 +12,7 @@ APP_SECRET_DICT = {
 
 
 def _hmac_sign(msg, secret):
-    return hmac.new(msg, secret, hashlib.sha1).hexdigest()
+    return hmac.new(secret, msg, hashlib.sha1).hexdigest()
 
 
 def _verify(url):
