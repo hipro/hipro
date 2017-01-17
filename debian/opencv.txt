@@ -40,7 +40,8 @@ git clone --depth=1 https://github.com/opencv/opencv.git
 git clone --depth=1 https://github.com/opencv/opencv_contrib.git
 
 3. Configuring and Installing
-makedir build
+cd opencv
+mkdir build
 cd build
 
 cmake [-D <flag>] [-D <flag>] ..
