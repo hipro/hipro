@@ -1,4 +1,8 @@
 OpenCV
+* Add
+aptitude build-dep opencv
+
+===
 Reference : http://docs.opencv.org/master/dd/dd5/tutorial_py_setup_in_fedora.html
 
 1. Dependencies (Compulsory + Optional)
